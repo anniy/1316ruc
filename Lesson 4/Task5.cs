@@ -13,11 +13,15 @@ namespace task5
             token = Console.ReadLine().Split();
             int[] matrix;
             int[] matrixPositive;
+            int[] matrixZero;
             int l = token.Length;
-            int j = 0;
+            int pos;
             int sum;
+            int zero;
             matrix = new int[l];
 
+            pos = 0;
+            zero = 0;
             for (int i = 0; i < l; i++)
             {
                 bool input = int.TryParse(token[i], out matrix[i]);
@@ -26,22 +30,31 @@ namespace task5
                     Console.WriteLine("ERROR");
                     return;
                 }
-                if (matrix[i] > 0) j++;
+                if (matrix[i] > 0) pos++;
+                else if (matrix[i] == 0) zero++;
             }
-            matrixPositive = new int[j];
-            j = 0;
+
+            matrixPositive = new int[pos];
+            matrixZero = new int[zero];
+            pos = 0;
             sum = 0;
+            zero = 0;
             for (int i = 0; i < l; i++)
             {
                 if (matrix[i] > 0)
                 {
-                    matrixPositive[j] = matrix[i];
-                    j++;
+                    matrixPositive[pos] = matrix[i];
+                    pos++;
                 }
                 else if (matrix[i] < 0)
                 {
                     sum += matrix[i];
-                } 
+                }
+                else if (matrix[i] == 0)
+                {
+                    matrixZero[zero] = i;
+                    zero++;
+                }
             }
 
             foreach (var item in matrixPositive)
@@ -49,14 +62,19 @@ namespace task5
                 Console.Write(item + "  ");
             }
 
-            if (j == l)
+            if (pos == l)
             {
                 Console.WriteLine("\nNo negative elements.");
             }
             else
             {
-                Console.WriteLine("\nAverage of negative elements: {0}", (float) sum / (l - j));
-            } 
+                Console.WriteLine("\nAverage of negative elements: {0}", (float) sum / (l - pos));
+            }
+
+            foreach (var item in matrixZero)
+            {
+                Console.Write(item + "  ");
+            }
         }
     }
 }
