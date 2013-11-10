@@ -17,15 +17,15 @@ namespace task1
             number = new int[l];
 
             for (int i = 0; i < l; i++)
-			{
-			    bool input = int.TryParse(token[i], out number[i]);
+	    {
+		bool input = int.TryParse(token[i], out number[i]);
                 if (input == false)
                 {
                     Console.WriteLine("ERROR");
                     return;
                 }
                 sum += number[i]; 
-			}
+	    }
             Console.WriteLine(sum);
         }
     }
