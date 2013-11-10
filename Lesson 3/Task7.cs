@@ -7,32 +7,44 @@ namespace task7
 {
     class Task7
     {
-        static ulong Factorial(ulong n)
-        {
-            return (n == 0) ? 1 : n * Factorial(n - 1);
-        }
-
         static void Main(string[] args)
         {
-            ulong n;
-            int i = 0;
-            ulong fact;
-            ulong f;
-            Console.Write("Enter two numbers: ");
+            int n;
+            int count2 = 0;
+            int count5 = 0;
+            Console.Write("Enter a numbers: ");
 
             try
             {
-                n = ulong.Parse(Console.ReadLine());
-                fact = Factorial(n);
-                f = fact;
+                n = int.Parse(Console.ReadLine());
 
-                while (f % 10 == 0)
+
+                for (int i = n; i >= 1; i--)
                 {
-                    f = f / 10;
-                    i++;
+                    if (i % 2 == 0)
+                    {
+                        count2++;
+                    }
+                    if (i % 5 == 0)
+                    {
+                        count5++;
+                    }
                 }
 
-                Console.WriteLine("{0} -> {1}", fact, i);    
+                if (count5 == count2)
+                {
+                    Console.WriteLine("N! -> {0}", count5);    
+                }
+                else if (count5 < count2)
+                {
+                    Console.WriteLine("N! -> {0}", count5);    
+                }
+                else if (count5 > count2)
+                {
+                    Console.WriteLine("N! -> {0}", count2);
+                }
+
+                
             }
             catch (Exception)
             {
