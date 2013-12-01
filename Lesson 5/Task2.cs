@@ -16,12 +16,13 @@ namespace task2
                 sb.Append(i);
                 sb.Append(',');
             }
+            sb.Remove(sb.Length - 1, 1);
             return sb.ToString();
         }
 
         static void Write(string str)
         {
-            Console.WriteLine(str.Replace(",", "\n"));
+            Console.WriteLine(str.Replace(",", System.Environment.NewLine));
         }
 
         static void Main(string[] args)

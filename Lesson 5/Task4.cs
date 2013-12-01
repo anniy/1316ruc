@@ -9,34 +9,29 @@ namespace task4
     {
         static string Hello (string line, string separator)
         {
-            string result = "Hello I’m %name%, I’m a %sex%, and my phone number is %phone%";
-            
-            string[] token;
-            int startIndex = 0;
-            int endIndex = 0;
-            int i = 0;
-            string tmp = "";
-            
-            token = line.Split(new string[] {separator}, StringSplitOptions.None);
-            if (String.Compare(token[0], line) != 0)
+            if (!String.IsNullOrWhiteSpace(line))
             {
-                while ((startIndex != -1) && (i < token.Length))
+                string[] token;
+                token = line.Split(new string[] {separator}, StringSplitOptions.None);
+                if (token.Length == 3)
                 {
-                    startIndex = result.IndexOf('%');
-                    endIndex = result.IndexOf('%', startIndex + 1);
-                    if (endIndex == -1)
+                    if (String.Compare(token[0], line) != 0)
                     {
-                        break;
+                        return string.Format("Hello I’m {0}, I’m a {1}, and my phone number is {2}", token[0], token[1], token[2]);
                     }
-                    tmp = result.Substring(startIndex, endIndex - startIndex + 1);
-                    result = result.Replace(tmp, token[i]);
-                    i++;
+                    else
+                    {
+                        return "Separator must be \",\"";
+                    }        
                 }
-                return result;
+                else
+                {
+                    return "Line format must be 'NAME,SEX,PHONE'";
+                } 
             }
             else
             {
-                return "ERROR";
+                return "Incorrect line format. String is null, empty, or consists only of white-space characters.";
             }
         }
 

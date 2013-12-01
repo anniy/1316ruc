@@ -16,8 +16,9 @@ namespace task1
                 sb.Append(i);
                 sb.Append(',');
             }
+            sb.Remove(sb.Length-1, 1);
             return sb.ToString();
-       }
+        }
 
         static void Main(string[] args)
         {
@@ -39,7 +40,7 @@ namespace task1
             watch.Stop();
 
             Console.WriteLine("{0}\n {1}", n, result);
-            Console.WriteLine("{0} sec.", (float) watch.ElapsedMilliseconds / 1000);
+            Console.WriteLine("{0} sec.", (float)watch.ElapsedMilliseconds / 1000);
         }
     }
 }

@@ -10,96 +10,65 @@ namespace task5
     {
         static string Hello(string line, string separator)
         {
-            string result = "Hello I am %name%, I am a %sex%, and my phone number is %phone%.";
-
-            string[] token;
-            int startIndex = 0;
-            int endIndex = 0;
-            int i = 0;
-            string tmp = "";
-
-            token = line.Split(separator.ToCharArray(), StringSplitOptions.None);
-            if (String.Compare(token[0], line) != 0)
+            if (!String.IsNullOrWhiteSpace(line))
             {
-                while ((startIndex != -1) && (i < token.Length))
+                string[] token;
+                token = line.Split(separator.ToCharArray(), StringSplitOptions.None);
+                if (token.Length == 3)
                 {
-                    startIndex = result.IndexOf('%');
-                    endIndex = result.IndexOf('%', startIndex + 1);
-                    if (endIndex == -1)
+                    if (String.Compare(";", separator) == 0)
                     {
-                        break;
+                        return string.Format("Hello I am {0}, I am a {1}, and my phone number is {2}", token[0], token[1], token[2]);
                     }
-                    tmp = result.Substring(startIndex, endIndex - startIndex + 1);
-                    result = result.Replace(tmp, token[i]);
-                    i++;
+                    else
+                    {
+                        throw new System.ArgumentException("Separator must be \";\"");
+                    }
                 }
-                return result;
+                else
+                {
+                    throw new System.ArgumentException("Line format must be 'NAME;SEX;PHONE'");
+                }
             }
             else
             {
-                return "ERROR";
+                throw new System.ArgumentException("Line cannot be null, empty, or white-space");
             }
         }
-
-        static void Write(string[] str, string fileName)
+     
+        static void Read(string inputFile, string outputFile)
         {
             try
             {
-                StreamWriter st = new StreamWriter(fileName);
-                using (st)
+                StreamReader reader = new StreamReader(inputFile);
+                StreamWriter writer = new StreamWriter(outputFile);
+
+                using (writer)
                 {
-                    foreach (var item in str)
+                    using (reader)
                     {
-                        st.WriteLine(item);    
+                        string line = "";
+                        while ((line = reader.ReadLine()) != null)
+                        {
+                            writer.WriteLine(Hello(line, ";"));    
+                        }
                     }
                 }
             }
             catch (FileNotFoundException)
             {
-                Console.WriteLine("FileNotFound");
+                Console.WriteLine("Please, frst create the file {0}", inputFile);
             }
-            catch (IOException)
-            {
-                Console.WriteLine("IOException");
-            }
-        }
-
-     
-
-        static void Read(out string[] str, string fileName)
-        {
-            string[] line = new string[1000];
-            int index = 0;
-
-            try
-            {
-                StreamReader st = new StreamReader(fileName);
-                using (st)
-                {
-                    while ((line[index] = st.ReadLine()) != null)
-                    {
-                        index++;
-                    }
-                }
-            }
-            catch (Exception e)
+            catch (ArgumentException e)
             {
                 Console.WriteLine(e.Message);
             }
 
-            str = new string[index];
-
-            for (int i = 0; i < index; i++)
-            {
-                str[i] = Hello(line[i], ";");
-            }
         }
 
         static void Main(string[] args)
         {
-            string[] result;
-            Read(out result, "in.csv");
-            Write(result, "out.csv");
+            Read("in.csv", "out.csv");
         }
     }
 }
