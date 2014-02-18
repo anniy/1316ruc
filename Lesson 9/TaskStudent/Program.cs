@@ -9,8 +9,8 @@ namespace TaskStudent
     {
         static void Main(string[] args)
         {
-            int[] mark = new int[2];
-            Student AKaneva = new Student("0342125476", 160156, mark);
+            int[] mark = new int[2] {5, 6};
+            Student AKaneva = new Student("8305035373", 160156, mark, "Ana", "Kaneva");
             AKaneva.PrintData();
         }
     }

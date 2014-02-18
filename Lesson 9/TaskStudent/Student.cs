@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Globalization;
 
 
 namespace TaskStudent
@@ -14,6 +15,7 @@ namespace TaskStudent
         private string lastName;
         private int facultyNumber;
         private int[] mark;
+        private DateTime birthDate;
 
         private static int count;
 
@@ -46,7 +48,7 @@ namespace TaskStudent
         }
 
         public Student(string id, int facultyNumber)
-            : this(id, facultyNumber, new int[] { 0, 0 }, null, null, null)
+            : this(id, facultyNumber, new int[] { 2, 2 }, null, null, null)
         {
         }
 
@@ -56,12 +58,12 @@ namespace TaskStudent
         }
 
         public Student(string id, int facultyNumber, string firstName, string secondName, string lastName)
-            : this(id, facultyNumber, new int[] { 0, 0 }, firstName, secondName, lastName)
+            : this(id, facultyNumber, new int[] { 2, 2 }, firstName, secondName, lastName)
         {
         }
 
         public Student(string id, int facultyNumber, string firstName, string lastName)
-            : this(id, facultyNumber, new int[] { 0, 0 }, firstName, null, lastName)
+            : this(id, facultyNumber, new int[] { 2, 2 }, firstName, null, lastName)
         {
         }
 
@@ -106,6 +108,12 @@ namespace TaskStudent
 
         private void ValidateID(string id)
         {
+            int mounth;
+            string birthYear;
+            string birthMounth;
+            string formats;
+            string strBirthDate;
+
             if (id.Length != 10)
             {
                 throw new ArgumentOutOfRangeException("The id must have 10 symbols.");
@@ -121,6 +129,28 @@ namespace TaskStudent
             {
                 throw new ArgumentOutOfRangeException("The id must have only numbers.");
             }
+
+            birthYear = id.Substring(0, 2);
+            birthMounth = id.Substring(2, 2);
+            mounth = Convert.ToInt32(birthMounth);
+            if (mounth > 40)
+            {
+                birthYear = "20" + birthYear;
+                mounth -= 40;
+            }
+            else
+            {
+                birthYear = "19" + birthYear;
+            }
+
+            
+            strBirthDate = id.Substring(4, 2) + "." + mounth + "." + birthYear;
+            formats = "dd.M.yyyy";
+
+            if (!DateTime.TryParseExact(strBirthDate, formats, CultureInfo.InvariantCulture, DateTimeStyles.None, out birthDate))
+            {
+                throw new ArgumentOutOfRangeException("The date is not valid.");
+            }
             
             if (this.GetAge(id) < 16)
             {
@@ -132,23 +162,14 @@ namespace TaskStudent
         public int GetAge(string id)
         {
             int age;
-            int mounth;
-
-            string birthYear = id.Substring(0, 2);
-            string birthMounth = id.Substring(2, 2);
-            mounth = Convert.ToInt32(birthMounth);
-            if (mounth > 40)
-            {
-                birthYear = "20" + birthYear;
-            }
-            else
-            {
-                birthYear = "19" + birthYear;
-            }
-
-            age = Convert.ToInt32(birthYear);
             DateTime currentDate = DateTime.Now;
-            age = currentDate.Year - age;
+
+            age = currentDate.Year - birthDate.Year;
+
+            if ((currentDate.Month < birthDate.Month) || (currentDate.Month == birthDate.Month && currentDate.Day < birthDate.Day))
+            {
+                age--;
+            }
             return age;
         }
 
@@ -156,8 +177,8 @@ namespace TaskStudent
         {
             try
             {
-                Console.WriteLine("Name = {0} {1} {2}", this.firstName, this.secondName, this.lastName);
                 Console.WriteLine("ID = {0}", this.id);
+                Console.WriteLine("Name = {0} {1} {2}", this.firstName, this.secondName, this.lastName);
                 Console.WriteLine("FacNum = {0}", this.facultyNumber);
                 Console.WriteLine("Age = {0}", this.GetAge(this.id));
 
@@ -167,6 +188,10 @@ namespace TaskStudent
                 }
             }
             catch (NullReferenceException e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            catch (ArgumentOutOfRangeException e)
             {
                 Console.WriteLine(e.Message);
             }
