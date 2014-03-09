@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using Task1;
 
 namespace Task5
 {
@@ -11,26 +12,20 @@ namespace Task5
         static void Main(string[] args)
         {
             int minNum = 0;
-            int maxNum = 1000;
+            int maxNum = 1001;
 
             List<int> list = new List<int>();
-            long[] resultArr = new long [1001]; 
+            long[] resultArr;
             try
             {
-                for (int i = 0; i < 1001; i++)
-                {
-                    resultArr[i] = 0;
-                }
+                ReadNumbers rn = new ReadNumbers();
                 Random radnomNum = new Random();
                 for (int i = 0; i < 2000; i++)
                 {
                     list.Add(radnomNum.Next(minNum, maxNum));
                 }
-                foreach (var item in list.ToList())
-                {
-                    List<int> results = list.FindAll(element => element == item);
-                    resultArr[item] = results.Count;
-                }
+                resultArr = rn.CountOccurrencItem(list);
+                
                 for (int i = 0; i < resultArr.Length; i++)
                 {
                     if (i % 20 == 0)

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Task1;
 
 namespace Task2
 {
@@ -9,38 +10,32 @@ namespace Task2
     {
         static void Main(string[] args)
         {
-            string line;
-            string[] token;
-            int tmp;
-            
             Stack<int> stack = new Stack<int>();
+            byte n;
 
+            Console.Write("Enter the count of integer number = ");
             try
             {
-                line = Console.ReadLine().ToString();
-
-                while (line.Length != 0)
-                {
-                    token = line.Split();
-                    for (int i = 0; i < token.Length; i++)
-                    {
-                        bool result = int.TryParse(token[i], out tmp);
-                        if ((result) && (tmp > 0))
-                        {
-                            stack.Push(tmp);
-                        }
-                    }
-                    line = Console.ReadLine().ToString();
-                }
-
+                n = byte.Parse(Console.ReadLine());
+                Console.WriteLine("Enter the {0} integer number:", n);
+                ReadNumbers rn = new ReadNumbers();
+                rn.Read(stack, n);
+                Console.WriteLine("-------------------");
                 foreach (var item in stack)
                 {
-                    Console.WriteLine("{0}", item);
-                }
+                    if (item > 0)
+                    {
+                        Console.WriteLine(item);
+                    }
+                }              
             }
-            catch (NullReferenceException)
+            catch (FormatException)
             {
-                Console.WriteLine("Only the empty line interupt the program.");
+                Console.WriteLine("The value is not a positively integer number.");
+            }
+            catch (NullReferenceException e)
+            {
+                Console.WriteLine(e.Message);
             }
         }
     }
